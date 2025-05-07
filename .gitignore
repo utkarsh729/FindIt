@@ -10,11 +10,21 @@ target/
 frontend/node_modules/
 frontend/build/
 frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
 
 # IDE
 .idea/
 *.iml
 *.swp
+.vscode/
+*.sublime-workspace
+*.sublime-project
 
 # Database
 *.db
@@ -22,3 +32,16 @@ frontend/.env
 
 # Environment files
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build files
+build/
+dist/
+out/
+
+# System files
+.DS_Store
+Thumbs.db
