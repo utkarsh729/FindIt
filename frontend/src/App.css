@@ -1,0 +1,16 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
+  padding-bottom: 32px;
+}
+
+/* Ensure text elements don't overflow containers */
+h1, h2, h3, h4, h5, h6, p {
+  overflow-wrap: break-word;
+  hyphens: auto;
+} 

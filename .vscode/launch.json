@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-FindItApplication<FindIt>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.FindIt.FindItApplication",
+            "projectName": "FindIt",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

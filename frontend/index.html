@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="FindIt - Premium E-commerce Search Platform" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>FindIt - Premium E-commerce Search</title>
+    
+    <!-- Load React and React DOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Load Material-UI -->
+    <script src="https://unpkg.com/@mui/material@5.14.18/umd/material-ui.development.js"></script>
+    
+    <!-- Load Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary: #64748b;
+        --success: #22c55e;
+        --background: #f8fafc;
+        --surface: #ffffff;
+        --text: #1e293b;
+        --text-light: #64748b;
+        --border: #e2e8f0;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      /* Header Styles */
+      .header {
+        background-color: var(--surface);
+        box-shadow: var(--shadow-sm);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      .header-content {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .logo i {
+        font-size: 1.75rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .nav-link.active {
+        color: var(--primary);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 8rem 1rem 4rem;
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.8s ease-out 0.2s backwards;
+      }
+
+      /* Search Section */
+      .search-container {
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+      }
+
+      .search-form {
+        display: flex;
+        background-color: var(--surface);
+        border-radius: 1rem;
+        padding: 0.5rem;
+        box-shadow: var(--shadow-lg);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .search-form:focus-within {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg), 0 0 0 4px rgba(37, 99, 235, 0.1);
+      }
+
+      .search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+        background: transparent;
+      }
+
+      .search-button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+
+      .search-button:hover {
+        background-color: var(--primary-dark);
+      }
+
+      /* Category Filter */
+      .category-filter {
+        max-width: 1280px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .category-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .category-button {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 2rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .category-button:hover {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .category-button.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      /* Products Grid */
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+
+      .product-card {
+        background-color: var(--surface);
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .product-image-container {
+        position: relative;
+        padding-top: 100%;
+        background-color: #f8fafc;
+        overflow: hidden;
+      }
+
+      .product-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
+
+      .product-card:hover .product-image {
+        transform: scale(1.05);
+      }
+
+      .product-info {
+        padding: 1.5rem;
+      }
+
+      .product-name {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+      }
+
+      .product-brand {
+        color: var(--text-light);
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+      }
+
+      .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .product-price {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.25rem;
+      }
+
+      .product-category {
+        background-color: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      /* Loading Spinner */
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(37, 99, 235, 0.1);
+        border-radius: 50%;
+        border-top-color: var(--primary);
+        animation: spin 1s linear infinite;
+        margin: 4rem auto;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 4rem 0;
+        margin-top: 4rem;
+      }
+
+      .footer-content {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-link {
+        color: var(--text-light);
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        display: block;
+        transition: color 0.2s;
+      }
+
+      .footer-link:hover {
+        color: var(--primary);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-light);
+        font-size: 0.875rem;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero {
+          padding: 6rem 1rem 3rem;
+        }
+
+        .hero h1 {
+          font-size: 1.75rem;
+        }
+
+        .search-form {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .search-button {
+          width: 100%;
+        }
+
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <i class="fas fa-search"></i>
+          FindIt
+        </a>
+        <nav class="nav-links">
+          <a href="/" class="nav-link active">Home</a>
+          <a href="#" class="nav-link">Categories</a>
+          <a href="#" class="nav-link">About</a>
+          <a href="#" class="nav-link">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Discover Amazing Products</h1>
+        <p>Find the best products from top brands with our powerful search platform</p>
+        <div class="search-container">
+          <form class="search-form" id="searchForm">
+            <input 
+              type="text" 
+              class="search-input" 
+              id="searchInput" 
+              placeholder="Search for products, brands, or categories..." 
+            />
+            <button type="submit" class="search-button">
+              <i class="fas fa-search"></i>
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <main class="container">
+      <div class="category-filter">
+        <div class="category-buttons" id="categoryButtons">
+          <button class="category-button active" data-category="ALL">All</button>
+          <button class="category-button" data-category="ELECTRONICS">Electronics</button>
+          <button class="category-button" data-category="FASHION">Fashion</button>
+          <button class="category-button" data-category="BOOKS">Books</button>
+          <button class="category-button" data-category="PHARMACY">Pharmacy</button>
+          <button class="category-button" data-category="SPORTS">Sports</button>
+        </div>
+      </div>
+
+      <div id="productsContainer">
+        <div class="loading-spinner"></div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About FindIt</h3>
+          <p>Your premium destination for discovering amazing products from trusted brands.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Home</a></li>
+            <li><a href="#" class="footer-link">Categories</a></li>
+            <li><a href="#" class="footer-link">About Us</a></li>
+            <li><a href="#" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Categories</h3>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Electronics</a></li>
+            <li><a href="#" class="footer-link">Fashion</a></li>
+            <li><a href="#" class="footer-link">Books</a></li>
+            <li><a href="#" class="footer-link">Sports</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:contact@findit.com" class="footer-link">contact@findit.com</a></li>
+            <li><a href="tel:+1234567890" class="footer-link">+1 (234) 567-890</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 FindIt. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      let products = [];
+      let isLoading = true;
+      let currentCategory = 'ALL';
+
+      // Fetch products from backend
+      async function fetchProducts(searchTerm = '') {
+        try {
+          isLoading = true;
+          renderProducts();
+          
+          const url = searchTerm 
+            ? `/products?search=${encodeURIComponent(searchTerm)}` 
+            : '/products';
+            
+          const response = await fetch(url);
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch products');
+          }
+          
+          products = await response.json();
+        } catch (error) {
+          console.error('Error fetching products:', error);
+          products = [];
+          showError('Failed to fetch products. Please try again later.');
+        } finally {
+          isLoading = false;
+          renderProducts();
+        }
+      }
+
+      // Format price as currency
+      function formatPrice(price) {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(price);
+      }
+
+      // Show error message
+      function showError(message) {
+        const container = document.getElementById('productsContainer');
+        container.innerHTML = `
+          <div style="text-align: center; padding: 2rem; background: white; border-radius: 1rem; box-shadow: var(--shadow);">
+            <i class="fas fa-exclamation-circle" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
+            <p style="color: var(--text); margin-bottom: 1rem;">${message}</p>
+            <button onclick="fetchProducts()" style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+              Try Again
+            </button>
+          </div>
+        `;
+      }
+
+      // Filter products by category
+      function filterProductsByCategory(category) {
+        currentCategory = category;
+        renderProducts();
+      }
+
+      // Render products to the DOM
+      function renderProducts() {
+        const container = document.getElementById('productsContainer');
+        
+        if (isLoading) {
+          container.innerHTML = '<div class="loading-spinner"></div>';
+          return;
+        }
+        
+        const filteredProducts = currentCategory === 'ALL' 
+          ? products 
+          : products.filter(product => product.category === currentCategory);
+
+        if (filteredProducts.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 3rem; background: white; border-radius: 1rem; box-shadow: var(--shadow);">
+              <i class="fas fa-search" style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+              <p style="color: var(--text); margin-bottom: 1rem;">No products found.</p>
+              <button onclick="fetchProducts()" style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                View All Products
+              </button>
+            </div>
+          `;
+          return;
+        }
+        
+        const productsHTML = `
+          <div class="products-grid">
+            ${filteredProducts.map(product => `
+              <div class="product-card" onclick="viewProduct('${product.id}')">
+                <div class="product-image-container">
+                  <img 
+                    src="${product.imageUrl}" 
+                    alt="${product.name}" 
+                    class="product-image"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="product-info">
+                  <h3 class="product-name">${product.name}</h3>
+                  <p class="product-brand">${product.brand}</p>
+                  <div class="product-footer">
+                    <span class="product-price">${formatPrice(product.price)}</span>
+                    <span class="product-category">${product.category}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        
+        container.innerHTML = productsHTML;
+      }
+
+      // View product details
+      function viewProduct(id) {
+        window.location.href = `product-details.html?id=${id}`;
+      }
+
+      // Handle search form submission
+      document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const searchTerm = document.getElementById('searchInput').value.trim();
+        fetchProducts(searchTerm);
+      });
+
+      // Handle category filter clicks
+      document.getElementById('categoryButtons').addEventListener('click', function(e) {
+        if (e.target.classList.contains('category-button')) {
+          // Update active state
+          document.querySelectorAll('.category-button').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          e.target.classList.add('active');
+
+          // Filter products
+          const category = e.target.dataset.category;
+          filterProductsByCategory(category);
+        }
+      });
+
+      // Initialize - fetch products on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        fetchProducts();
+      });
+    </script>
+  </body>
+</html> 
