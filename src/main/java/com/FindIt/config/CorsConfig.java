@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfig {
-    @Value("${spring.web.cors.allowed-origins:*}")
+    @Value("${spring.web.cors.allowed-origins:}")
     private String allowedOrigins;
 
     @Bean
@@ -16,19 +16,18 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                if (allowedOrigins.equals("*")) {
-                    registry.addMapping("/**")
-                        .allowedOriginPatterns("*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                String[] origins;
+                if (allowedOrigins == null || allowedOrigins.trim().isEmpty()) {
+                    // fallback to your frontend URL if env var is not set
+                    origins = new String[] { "https://find-it-two.vercel.app" };
                 } else {
-                    registry.addMapping("/**")
-                        .allowedOrigins(allowedOrigins.split(","))
+                    origins = allowedOrigins.split(",");
+                }
+                registry.addMapping("/**")
+                        .allowedOriginPatterns(origins)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
-                }
             }
         };
     }
