@@ -1,4 +1,4 @@
-INSERT INTO product (name, description, price, brand, category, image_url)
+INSERT INTO product (name, description, price, brand, category, imageUrl)
 VALUES
 ('Wireless Bluetooth Headphones', 'Noise-cancelling over-ear headphones with 30hr battery', 199.99, 'SoundMaster', 'ELECTRONICS', 'https://cdn.pixabay.com/photo/2016/01/09/07/44/headphone-1129896_1280.png'),
 ('4K Ultra HD Smart TV', '55-inch LED TV with HDR and streaming apps', 699.99, 'VisualTech', 'ELECTRONICS', 'https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_1280.jpg'),
