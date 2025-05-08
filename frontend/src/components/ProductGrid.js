@@ -30,21 +30,13 @@ const ProductGrid = ({ products, isLoading, searchTerm }) => {
       container 
       spacing={3} 
       className="product-grid"
-      justifyContent={products.length < 4 ? 'center' : undefined}
+      justifyContent="center"
     >
-      {products.map((product, idx) => {
-        let gridProps = { xs: 12, sm: 6, md: 4, lg: 3, xl: 3 };
-        if (products.length === 1) {
-          gridProps = { xs: 12, sm: 10, md: 8, lg: 6, xl: 5 };
-        } else if (products.length === 2) {
-          gridProps = { xs: 12, sm: 6, md: 6, lg: 6, xl: 6 };
-        }
-        return (
-          <Grid item {...gridProps} key={product.id}>
-            <ProductCard product={product} />
-          </Grid>
-        );
-      })}
+      {products.map((product) => (
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={product.id}>
+          <ProductCard product={product} />
+        </Grid>
+      ))}
     </Grid>
   );
 };
