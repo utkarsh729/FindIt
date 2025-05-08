@@ -16,10 +16,15 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public List<Product> searchProducts(String search) {
-        if (search == null || search.trim().isEmpty()) {
-            return productRepository.findAll();
+        try {
+            if (search == null || search.trim().isEmpty()) {
+                return productRepository.findAll();
+            }
+            return productRepository.findByNameContainingIgnoreCaseOrBrandContainingIgnoreCase(search, search);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception for debugging
+            throw e;
         }
-        return productRepository.findByNameContainingIgnoreCaseOrBrandContainingIgnoreCase(search, search);
     }
 
     public Product getProductById(UUID id) {

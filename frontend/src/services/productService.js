@@ -1,8 +1,5 @@
-import axios from 'axios';
+import api from './api';
 import { toast } from 'react-toastify';
-
-// Using direct Axios instead of our api.js module to fix the baseURL issue
-// Our backend endpoints start at the root, not at /api
 
 /**
  * Get all products, optionally filtered by search term
@@ -11,7 +8,7 @@ import { toast } from 'react-toastify';
  */
 export const getProducts = async (search = '') => {
   try {
-    const response = await axios.get(`/products${search ? `?search=${search}` : ''}`);
+    const response = await api.get(`/products${search ? `?search=${search}` : ''}`);
     return response.data;
   } catch (error) {
     toast.error('Failed to fetch products. Please try again later.');
@@ -27,7 +24,7 @@ export const getProducts = async (search = '') => {
  */
 export const getProductById = async (id) => {
   try {
-    const response = await axios.get(`/products/${id}`);
+    const response = await api.get(`/products/${id}`);
     return response.data;
   } catch (error) {
     toast.error('Failed to fetch product details. Please try again later.');
