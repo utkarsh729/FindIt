@@ -17,8 +17,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 String[] origins;
-                if (allowedOrigins == null || allowedOrigins.trim().isEmpty()) {
-                    // fallback to your frontend URL if env var is not set
+                // If not set or set to "*", always use your frontend URL
+                if (allowedOrigins == null || allowedOrigins.trim().isEmpty() || allowedOrigins.trim().equals("*")) {
                     origins = new String[] { "https://find-it-two.vercel.app" };
                 } else {
                     origins = allowedOrigins.split(",");
