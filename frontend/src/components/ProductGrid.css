@@ -1,6 +1,10 @@
 .product-grid {
   margin-top: 32px;
   animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
 }
 
 .loading-container {
@@ -42,5 +46,18 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .product-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    gap: 14px;
+    margin-top: 18px;
   }
 } 
