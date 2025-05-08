@@ -22,19 +22,23 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(length = 2000)
+    @Column(name = "description", length = 2000)
     private String description;
 
+    @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "brand")
     private String brand;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "category")
     private Category category;
 
     @Column(name = "image_url")
