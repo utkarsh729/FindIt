@@ -3,8 +3,8 @@ target/
 *.jar
 *.war
 *.ear
-.mvn/
-.mvn/wrapper/maven-wrapper.jar
+
+
 
 # React
 frontend/node_modules/
