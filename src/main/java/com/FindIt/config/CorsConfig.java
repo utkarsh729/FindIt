@@ -8,7 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfig {
-    @Value("${spring.web.cors.allowed-origins:}")
+
+    @Value("${spring.web.cors.allowed-origins:https://find-it-two.vercel.app}")
     private String allowedOrigins;
 
     @Bean
@@ -16,15 +17,10 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                String[] origins;
-                // If not set or set to "*", always use your frontend URL
-                if (allowedOrigins == null || allowedOrigins.trim().isEmpty() || allowedOrigins.trim().equals("*")) {
-                    origins = new String[] { "https://find-it-two.vercel.app" };
-                } else {
-                    origins = allowedOrigins.split(",");
-                }
+                String[] origins = allowedOrigins.split(",");
+
                 registry.addMapping("/**")
-                        .allowedOriginPatterns(origins)
+                        .allowedOriginPatterns(origins)  // ✅ use allowedOriginPatterns (supports patterns & allowCredentials)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
