@@ -18,9 +18,14 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 String[] origins = allowedOrigins.split(",");
-
+                // Filter out "*" and replace with your frontend URL
+                for (int i = 0; i < origins.length; i++) {
+                    if (origins[i].trim().equals("*")) {
+                        origins[i] = "https://find-it-two.vercel.app";
+                    }
+                }
                 registry.addMapping("/**")
-                        .allowedOriginPatterns(origins) // ✅ use allowedOriginPatterns instead of allowedOrigins
+                        .allowedOriginPatterns(origins)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
