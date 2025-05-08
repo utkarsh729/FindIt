@@ -23,7 +23,7 @@ const HomePage = () => {
     setIsLoading(true);
     try {
       const data = await getProducts(search);
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       if (!toast.isActive(TOAST_ID)) {
         toast.error('Failed to fetch products. Please try again later.', { toastId: TOAST_ID });
